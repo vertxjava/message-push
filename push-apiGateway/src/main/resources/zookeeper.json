@@ -1,0 +1,11 @@
+{
+  "zookeeperHosts":"47.94.8.155",
+  "sessionTimeout":20000,
+  "connectTimeout":3000,
+  "rootPath":"message_push",
+  "retry": {
+    "initialSleepTime":100,
+    "intervalTimes":10000,
+    "maxTimes":5
+  }
+}
