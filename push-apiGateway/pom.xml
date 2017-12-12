@@ -18,7 +18,7 @@
     <dependencies>
         <dependency>
             <groupId>com.vertxjava</groupId>
-            <artifactId>push-common</artifactId>
+            <artifactId>push-pull</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

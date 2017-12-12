@@ -1,4 +1,4 @@
-package com.vertxjava.common;
+package com.vertxjava.common.verticle;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
@@ -7,11 +7,13 @@ import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.ext.web.Router;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
 import io.vertx.servicediscovery.ServiceDiscoveryOptions;
+import io.vertx.servicediscovery.types.EventBusService;
 import io.vertx.servicediscovery.types.HttpEndpoint;
 
 import java.util.*;
@@ -68,10 +70,32 @@ public class BaseVerticle extends AbstractVerticle {
     }
 
     // 发布http服务
-    protected Future<Void> publishHttpEndpoint(String name, String host, int port) {
+    protected Future<Void> publishHttpEndpoint(String name, String apiName, String host, int port) {
         Record record = HttpEndpoint.createRecord(name, host, port, "/",
-                new JsonObject().put("api.name", config().getString("api.name", "")));
+                new JsonObject().put("api.name", apiName));
         return publish(record);
+    }
+
+    // 发布eventBus服务
+    protected Future<Void> publishEventBusService(String name, String address, Class serviceClass) {
+        Record record = EventBusService.createRecord(name, address, serviceClass);
+        return publish(record);
+    }
+
+    // 启用心跳监测
+    protected Router enableHeartbeat(Router router){
+        router.get("/heartbeat").handler(context -> {
+            context.response().end("ok");
+        });
+
+        return router;
+    }
+
+    // 获取代理服务
+    protected <T> Future<T> getProxyService(Class<T> clazz) {
+        Future<T> future = Future.future();
+        EventBusService.getProxy(discovery, clazz, future.completer());
+        return future;
     }
 
     // 发布服务
@@ -97,8 +121,9 @@ public class BaseVerticle extends AbstractVerticle {
         });
         return future;
     }
+
     // 获取所有http端点服务
-    protected Future<List<Record>> getAllHttpEndpoints(){
+    protected Future<List<Record>> getAllHttpEndpoints() {
         Future<List<Record>> future = Future.future();
         discovery.getRecords(record -> record.getType().equals(HttpEndpoint.TYPE),
                 future.completer());

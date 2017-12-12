@@ -13,6 +13,8 @@
         <module>push-apiGateway</module>
         <module>push-common</module>
         <module>push-monitor</module>
+        <module>push-pull</module>
+        <module>push-report</module>
     </modules>
 
     <properties>

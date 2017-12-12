@@ -1,4 +1,4 @@
-package com.vertxjava.common;
+package com.vertxjava.common.verticle;
 
 
 import io.vertx.core.Future;
