@@ -17,7 +17,7 @@ public class RedisStoreVerticle extends AbstractVerticle {
     // kafka的消费者服务
     private KafkaConsumer<String, JsonObject> kafkaConsumer;
     // kafka topic
-    private static final String TOPIC = "topic_report";
+    private static final String TOPIC = "topicReport";
     // kafka group
     private static final String GROUP = "group_redis";
     // 默认kafka服务

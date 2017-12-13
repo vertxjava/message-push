@@ -8,6 +8,7 @@ import io.vertx.core.Verticle;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.kafka.client.producer.KafkaProducer;
 import io.vertx.kafka.client.producer.KafkaProducerRecord;
 import io.vertx.kafka.client.producer.RecordMetadata;
@@ -32,7 +33,7 @@ public class ReportVerticle extends HttpVerticle {
     // api name
     private static final String API_NAME = "report";
     // kafka topic
-    private static final String TOPIC = "topic_report";
+    private static final String TOPIC = "topicReport";
     // kafka的发布者服务
     private KafkaProducer<String, JsonObject> kafkaProducer;
 
@@ -40,6 +41,7 @@ public class ReportVerticle extends HttpVerticle {
     public void start(Future<Void> startFuture) throws Exception {
         super.start();
         final Router router = Router.router(vertx);
+        router.route().handler(BodyHandler.create());
         router.post("/report").handler(this::dataReport);
         // 创建kafka服务
         // 初始化kafka生产者服务
@@ -70,10 +72,13 @@ public class ReportVerticle extends HttpVerticle {
 
     private void dataReport(RoutingContext context) {
         JsonObject params = context.getBodyAsJson();
+        System.out.println("收到了消息了："+params);
         KafkaProducerRecord<String, JsonObject> record = KafkaProducerRecord.create(TOPIC, params);
         kafkaProducer.write(record, done -> {
             if (done.succeeded()) {
                 RecordMetadata recordMetadata = done.result();
+                System.out.println("发送");
+                System.out.println(recordMetadata.getTopic());
                 context.response().end();
             } else {
                 context.response().setStatusCode(500).end();
