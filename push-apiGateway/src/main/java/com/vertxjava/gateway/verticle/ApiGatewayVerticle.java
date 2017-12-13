@@ -42,8 +42,6 @@ public class ApiGatewayVerticle extends HttpVerticle {
         int port = config().getInteger("port", DEFAULT_PORT);
         // 路由
         Router router = Router.router(vertx);
-        // 启用心跳监测
-        enableHeartbeat(router);
         // 支持从body中获取数据
         router.route().handler(BodyHandler.create());
         // 将/api/请求进行转发
@@ -55,7 +53,7 @@ public class ApiGatewayVerticle extends HttpVerticle {
             if (ar.succeeded()) {
                 // 发布网关服务
                 publishApiGateway(host, port);
-                publishHttpEndpoint(SERVER_NAME,API_NAME,host,port);
+                publishHttpEndpoint(SERVER_NAME, API_NAME, host, port);
                 log.info("API Gateway 发布成功，监听端口为：" + port);
             } else {
                 log.info("API Gateway 发布失败，原因：" + ar.cause());
@@ -110,9 +108,10 @@ public class ApiGatewayVerticle extends HttpVerticle {
                 // findAny() 方法实现简单的负载均衡
                 Optional<Record> record = records.stream().filter(rec -> apiName.equals(rec.getMetadata().getString("api.name"))).findAny();
                 if (record.isPresent()) {
+                    System.out.println(record.get().getLocation());
                     String newPath = path.substring(5 + apiName.length());
                     // 根据record获取HttpClient
-                    HttpClient client = discovery.getReference(record.get()).get();
+                    HttpClient client = discovery.getReference(record.get()).getAs(HttpClient.class);
                     HttpClientRequest hcr = client.request(context.request().method(), newPath, response -> {
                         response.bodyHandler(body -> {
                             // 获取HttpServerResponse

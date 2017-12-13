@@ -11,6 +11,10 @@
 
     <artifactId>push-pull</artifactId>
 
+    <properties>
+        <main.class>com.vertxjava.pull.Launcher</main.class>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.vertxjava</groupId>

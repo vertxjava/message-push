@@ -28,11 +28,7 @@ public class BaseVerticle extends AbstractVerticle {
     // 服务发现
     protected ServiceDiscovery discovery;
     // 服务记录，用于在销毁Verticle时，将服务记录从服务发现中移除
-    protected Set<Record> records = new ConcurrentHashSet<Record>();
-    // kafka的消费者服务
-    protected KafkaConsumer<String, String> kafkaConsumer;
-    // kafka的发布者服务
-    protected KafkaProducer<String, String> kafkaProducer;
+    private Set<Record> records = new ConcurrentHashSet<Record>();
 
     private Logger log = LoggerFactory.getLogger(BaseVerticle.class);
 
@@ -41,25 +37,6 @@ public class BaseVerticle extends AbstractVerticle {
         // 初始化服务发现，使用zookeeper保存服务记录
         discovery = ServiceDiscovery.create(vertx, new ServiceDiscoveryOptions()
                 .setBackendConfiguration(config().getJsonObject("serviceDiscovery")));
-
-        // 初始化kafka消费者服务
-        Map<String, String> configConsumer = new HashMap<>();
-        configConsumer.put("bootstrap.servers", "127.0.0.1:9092");
-        configConsumer.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        configConsumer.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        configConsumer.put("group.id", "my_group");
-        configConsumer.put("auto.offset.reset", "earliest");
-        configConsumer.put("enable.auto.commit", "false");
-        kafkaConsumer = KafkaConsumer.create(vertx, configConsumer);
-
-        // 初始化kafka生产者服务
-        Map<String, String> configProducer = new HashMap<>();
-        configProducer.put("bootstrap.servers", "127.0.0.1:9092");
-        configProducer.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        configProducer.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        configProducer.put("acks", "1");
-        kafkaProducer = KafkaProducer.create(vertx, configProducer);
-
     }
 
     // 发布api gateway服务
@@ -80,15 +57,6 @@ public class BaseVerticle extends AbstractVerticle {
     protected Future<Void> publishEventBusService(String name, String address, Class serviceClass) {
         Record record = EventBusService.createRecord(name, address, serviceClass);
         return publish(record);
-    }
-
-    // 启用心跳监测
-    protected Router enableHeartbeat(Router router){
-        router.get("/heartbeat").handler(context -> {
-            context.response().end("ok");
-        });
-
-        return router;
     }
 
     // 获取代理服务

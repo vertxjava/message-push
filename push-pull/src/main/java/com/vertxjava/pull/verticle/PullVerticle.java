@@ -31,7 +31,6 @@ public class PullVerticle extends HttpVerticle {
         serviceBinder.register(PullService.class, pullService);
 
         final Router router = Router.router(vertx);
-        enableHeartbeat(router);
 
         String host = config().getString("host", DEFAULT_HOST);
         Integer port = config().getInteger("port", DEFAULT_PORT);
