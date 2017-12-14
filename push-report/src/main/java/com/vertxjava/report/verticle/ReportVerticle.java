@@ -15,6 +15,7 @@ import io.vertx.kafka.client.producer.RecordMetadata;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author Jack
@@ -35,7 +36,7 @@ public class ReportVerticle extends HttpVerticle {
     // kafka topic
     private static final String TOPIC = "topicReport";
     // kafka的发布者服务
-    private KafkaProducer<String, JsonObject> kafkaProducer;
+    private KafkaProducer<Object, Object> kafkaProducer;
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
@@ -45,12 +46,16 @@ public class ReportVerticle extends HttpVerticle {
         router.post("/report").handler(this::dataReport);
         // 创建kafka服务
         // 初始化kafka生产者服务
-        Map<String, String> configProducer = new HashMap<>();
-        configProducer.put("bootstrap.servers", config().getString("kafkaServer", DEFAULT_KAFKA_SERVER));
-        configProducer.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        configProducer.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        configProducer.put("acks", "1");
-        kafkaProducer = KafkaProducer.create(vertx, configProducer);
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "192.168.237.128:9092,192.168.237.128:9093");
+        props.put("acks", "all");
+        props.put("retries", "1");
+        props.put("batch.size", "1048576");
+        props.put("linger.ms", "1");
+        props.put("buffer.memory", "33554432");
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        kafkaProducer = io.vertx.kafka.client.producer.KafkaProducer.createShared(vertx, "the_Kafka", props);
         // host
         String host = config().getString("host", DEFAULT_HOST);
         // port
@@ -68,12 +73,12 @@ public class ReportVerticle extends HttpVerticle {
                 System.out.println("部署失败");
             }
         });
+
     }
 
     private void dataReport(RoutingContext context) {
         JsonObject params = context.getBodyAsJson();
-        System.out.println("收到了消息了："+params);
-        KafkaProducerRecord<String, JsonObject> record = KafkaProducerRecord.create(TOPIC, params);
+        KafkaProducerRecord<Object, Object> record = KafkaProducerRecord.create(TOPIC, params.encodePrettily());
         kafkaProducer.write(record, done -> {
             if (done.succeeded()) {
                 RecordMetadata recordMetadata = done.result();
@@ -97,5 +102,11 @@ public class ReportVerticle extends HttpVerticle {
         Future<String> future = Future.future();
         vertx.deployVerticle(msv,new DeploymentOptions().setConfig(config()),future.completer());
         return future.map(r -> null);
+    }
+
+    @Override
+    public void stop(Future<Void> stopFuture) throws Exception {
+        kafkaProducer.close();
+        super.stop(stopFuture);
     }
 }

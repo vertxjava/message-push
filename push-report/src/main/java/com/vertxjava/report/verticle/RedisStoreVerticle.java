@@ -15,7 +15,7 @@ import java.util.Map;
  **/
 public class RedisStoreVerticle extends AbstractVerticle {
     // kafka的消费者服务
-    private KafkaConsumer<String, JsonObject> kafkaConsumer;
+    private KafkaConsumer<Object, Object> consumer;
     // kafka topic
     private static final String TOPIC = "topicReport";
     // kafka group
@@ -26,28 +26,36 @@ public class RedisStoreVerticle extends AbstractVerticle {
     @Override
     public void start(Future<Void> startFuture) throws Exception {
 // 初始化kafka消费者服务
-        Map<String, String> configConsumer = new HashMap<>();
-        configConsumer.put("bootstrap.servers", config().getString("kafkaServer",DEFAULT_KAFKA_SERVER));
-        configConsumer.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        configConsumer.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
-        configConsumer.put("group.id", GROUP);
-        configConsumer.put("auto.offset.reset", "earliest");
-        configConsumer.put("enable.auto.commit", "false");
-        kafkaConsumer = KafkaConsumer.create(vertx, configConsumer);
+        Map<String, String> config = new HashMap<>();
+        config.put("bootstrap.servers", "192.168.237.128:9092,192.168.237.128:9093");
+        config.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        config.put("value.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        config.put("group.id", GROUP);
+        config.put("enable.auto.commit", "false");
+        config.put("auto.offset.reset", "earliest");
+        consumer = KafkaConsumer.create(vertx, config);
         // 订阅topic
-        kafkaConsumer.subscribe(TOPIC,ar -> {
+        consumer.subscribe(TOPIC,ar -> {
             if (ar.succeeded()){
                 System.out.println("订阅成功");
             }else{
                 System.out.println("订阅失败");
             }
         });
-        kafkaConsumer.handler(this::consumer);
+        consumer.handler(this::consumer);
         startFuture.complete();
     }
 
-    private void consumer(KafkaConsumerRecord<String,JsonObject> record){
-        System.out.println("消费成功");
+    private void consumer(KafkaConsumerRecord<Object,Object> record){
+        consumer.resume();
+        System.out.println("消费成功redis");
         System.out.println(record.value());
+        consumer.commit();
+    }
+
+    @Override
+    public void stop(Future<Void> stopFuture) throws Exception {
+        consumer.close();
+        super.stop(stopFuture);
     }
 }
