@@ -1,0 +1,2 @@
+1、修改resource下的zookeeper配置。
+2、修改配置文件中的kafka配置。
