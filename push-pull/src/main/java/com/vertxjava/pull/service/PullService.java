@@ -7,6 +7,8 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.json.JsonObject;
+import io.vertx.redis.RedisClient;
+
 
 /**
  * @author Jack
@@ -19,8 +21,8 @@ public interface PullService {
     // 服务地址
     String SERVICE_ADDRESS = "service_pull";
 
-    static PullService create() {
-        return new PullServiceImpl();
+    static PullService create(RedisClient redisClient) {
+        return new PullServiceImpl(redisClient);
     }
 
     /**

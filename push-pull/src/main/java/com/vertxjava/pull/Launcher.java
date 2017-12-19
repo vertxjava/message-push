@@ -55,7 +55,7 @@ public class Launcher {
         // 配置DeploymentOptions
         DeploymentOptions options = new DeploymentOptions();
         options.setConfig(conf.getJsonObject("verticleConfig"));
-
+        options.setInstances(2);
         // 获取集群vertx
         Vertx.clusteredVertx(vertxOptions, ar -> {
             if (ar.succeeded()) {
