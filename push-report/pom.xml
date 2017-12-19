@@ -11,6 +11,10 @@
 
     <artifactId>push-report</artifactId>
 
+    <properties>
+        <main.class>com.vertxjava.report.Launcher</main.class>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.vertxjava</groupId>

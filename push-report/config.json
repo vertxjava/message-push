@@ -8,13 +8,22 @@
     "port":8004,
     // 服务发现
     "serviceDiscovery":{
-      "connection":"47.94.8.155:2181",
+      "connection":"192.168.237.128:2181",
       "maxRetries":3,
       "baseSleepTimeBetweenRetries":1000,
       "ephemeral":true,
       "guaranteed":true,
       "basePath":"/services"
     },
-    "kafkaServer":"47.94.8.155:9092"
+    "redisConfig":{
+      "host":"192.168.237.128", // host
+      "port":6379, // port
+      "encoding":"UTF-8" // encoding
+    },
+    "mongodbConfig":{
+      "connection_string":"mongodb://192.168.237.128:27017",
+      "db_name":"push"
+    },
+    "kafkaServer":"192.168.237.128:9092,192.168.237.128:9093"
   }
 }
