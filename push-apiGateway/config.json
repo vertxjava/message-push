@@ -1,19 +1,30 @@
 {
-  "eventBusConfig":{
-    "host":"localhost",
-    "port":8101
+  "eventBusConfig": {
+    "host": "localhost",
+    "port": 8101
   },
-  "verticleConfig":{
-    "host":"localhost",
-    "port":8001,
+  "verticleConfig": {
+    "host": "localhost",
+    "port": 8001,
+    "redisDataSource": {
+      "name": "redisServer",
+      "host": "192.168.237.128",
+      "port": 6379
+    },
+    "mongodbDataSource":{
+      "name": "mongodbServer",
+      "host": "192.168.237.128",
+      "port": 27017,
+      "dn_name":"push"
+    },
     // 服务发现
-    "serviceDiscovery":{
-      "connection":"47.94.8.155:2181",
-      "maxRetries":3,
-      "baseSleepTimeBetweenRetries":1000,
-      "ephemeral":true,
-      "guaranteed":true,
-      "basePath":"/services"
+    "serviceDiscovery": {
+      "connection": "192.168.237.128:2181",
+      "maxRetries": 3,
+      "baseSleepTimeBetweenRetries": 1000,
+      "ephemeral": true,
+      "guaranteed": true,
+      "basePath": "/services"
     }
   }
 }
