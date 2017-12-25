@@ -45,7 +45,6 @@ public class MonitorVerticle extends HttpVerticle {
         router.route("/eventbus/*").handler(sockJSHandler);
         // 将discovery中的数据绑定到router上
         ServiceDiscoveryRestEndpoint.create(router, discovery);
-
         router.route("/*").handler(StaticHandler.create());
 
         int port = config().getInteger("port", DEFAULT_PORT);
@@ -60,15 +59,4 @@ public class MonitorVerticle extends HttpVerticle {
         });
     }
 
-    // 启用心跳监测
-    private void enableHeartbeat(){
-        getAllHttpEndpoints().setHandler(ar -> {
-            if (ar.succeeded()){
-                List<Record> records = ar.result().stream().filter(record -> record.getMetadata().getString("api.name") != null).collect(Collectors.toList());
-
-            }else{
-                log.error("获取http端点服务失败，原因：" + ar.cause());
-            }
-        });
-    }
 }

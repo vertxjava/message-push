@@ -9,7 +9,7 @@
     "interval":5000,
     // 服务发现
     "serviceDiscovery":{
-      "connection":"47.94.8.155:2181",
+      "connection":"192.168.237.128:2181",
       "maxRetries":3,
       "baseSleepTimeBetweenRetries":1000,
       "ephemeral":true,

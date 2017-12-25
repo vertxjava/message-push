@@ -17,7 +17,7 @@ import io.vertx.redis.RedisClient;
 @ProxyGen
 public interface PullService {
     // 服务名称
-    String SERVICE_NAME = "pull-eb-service";
+    String SERVICE_NAME = "pull-eb-services";
     // 服务地址
     String SERVICE_ADDRESS = "service_pull";
 

@@ -1,0 +1,4 @@
+com.vertxjava.servicediscovery.types.impl.PGDataSourceImpl
+com.vertxjava.servicediscovery.types.impl.KCDataSourceImpl
+com.vertxjava.servicediscovery.types.impl.KPDataSourceImpl
+com.vertxjava.servicediscovery.types.impl.WebSocketEndpointImpl

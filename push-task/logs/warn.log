@@ -1,0 +1,6 @@
+[2017-12-18 18:15:06.102] [WARN ] [main] io.vertx.core.impl.VertxImpl-420 - Metrics has been set to enabled but no VertxMetricsFactory found on classpath
+[2017-12-18 18:15:55.329] [WARN ] [main] io.vertx.core.impl.VertxImpl-420 - Metrics has been set to enabled but no VertxMetricsFactory found on classpath
+[2017-12-18 18:16:43.655] [WARN ] [main] io.vertx.core.impl.VertxImpl-420 - Metrics has been set to enabled but no VertxMetricsFactory found on classpath
+[2017-12-18 18:17:31.397] [WARN ] [main] io.vertx.core.impl.VertxImpl-420 - Metrics has been set to enabled but no VertxMetricsFactory found on classpath
+[2017-12-18 18:24:10.574] [WARN ] [main] io.vertx.core.impl.VertxImpl-420 - Metrics has been set to enabled but no VertxMetricsFactory found on classpath
+[2017-12-18 18:25:18.095] [WARN ] [main] io.vertx.core.impl.VertxImpl-420 - Metrics has been set to enabled but no VertxMetricsFactory found on classpath

@@ -1,0 +1,180 @@
+[2017-12-18 18:15:05.037] [INFO ] [main] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-134 - Loaded zookeeper.json file from resourceLocation=zookeeper.json
+[2017-12-18 18:15:06.311] [INFO ] [vert.x-worker-thread-0] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-299 - Zookeeper hosts set to 192.168.237.128
+[2017-12-18 18:15:06.434] [INFO ] [vert.x-worker-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:06.502] [INFO ] [vert.x-worker-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.341] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.task.Launcher-65 - 创建集群vertx成功
+[2017-12-18 18:15:07.360] [INFO ] [vert.x-eventloop-thread-3] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.360] [INFO ] [vert.x-eventloop-thread-4] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.361] [INFO ] [vert.x-eventloop-thread-7] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.363] [INFO ] [vert.x-eventloop-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.364] [INFO ] [vert.x-eventloop-thread-1] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.366] [INFO ] [vert.x-eventloop-thread-6] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.366] [INFO ] [vert.x-eventloop-thread-5] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.372] [INFO ] [vert.x-eventloop-thread-2] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:07.399] [INFO ] [vert.x-eventloop-thread-3-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.410] [INFO ] [vert.x-eventloop-thread-6-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.443] [INFO ] [vert.x-eventloop-thread-7-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.444] [INFO ] [vert.x-eventloop-thread-2-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.445] [INFO ] [vert.x-eventloop-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.445] [INFO ] [vert.x-eventloop-thread-5-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.447] [INFO ] [vert.x-eventloop-thread-4-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.448] [INFO ] [vert.x-eventloop-thread-1-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:07.507] [INFO ] [vert.x-eventloop-thread-5] io.vertx.ext.asyncsql.impl.PostgreSQLClientImpl-120 - Creating configuration for localhost:8005
+[2017-12-18 18:15:07.997] [INFO ] [vert.x-eventloop-thread-2] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:07.997] [INFO ] [vert.x-eventloop-thread-3] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:07.998] [INFO ] [vert.x-eventloop-thread-7] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:07.999] [INFO ] [vert.x-eventloop-thread-1] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:07.999] [INFO ] [vert.x-eventloop-thread-6] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:07.999] [INFO ] [vert.x-eventloop-thread-4] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:08.000] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:08.000] [INFO ] [vert.x-eventloop-thread-5] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:54.411] [INFO ] [main] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-134 - Loaded zookeeper.json file from resourceLocation=zookeeper.json
+[2017-12-18 18:15:55.535] [INFO ] [vert.x-worker-thread-0] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-299 - Zookeeper hosts set to 192.168.237.128
+[2017-12-18 18:15:55.617] [INFO ] [vert.x-worker-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:55.684] [INFO ] [vert.x-worker-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.518] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.task.Launcher-65 - 创建集群vertx成功
+[2017-12-18 18:15:56.536] [INFO ] [vert.x-eventloop-thread-7] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.540] [INFO ] [vert.x-eventloop-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.542] [INFO ] [vert.x-eventloop-thread-1] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.543] [INFO ] [vert.x-eventloop-thread-3] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.543] [INFO ] [vert.x-eventloop-thread-2] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.544] [INFO ] [vert.x-eventloop-thread-5] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.545] [INFO ] [vert.x-eventloop-thread-4] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.546] [INFO ] [vert.x-eventloop-thread-6] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:15:56.574] [INFO ] [vert.x-eventloop-thread-7-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.582] [INFO ] [vert.x-eventloop-thread-1-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.607] [INFO ] [vert.x-eventloop-thread-2-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.613] [INFO ] [vert.x-eventloop-thread-6-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.615] [INFO ] [vert.x-eventloop-thread-5-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.616] [INFO ] [vert.x-eventloop-thread-4-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.618] [INFO ] [vert.x-eventloop-thread-3-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.623] [INFO ] [vert.x-eventloop-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:15:56.650] [INFO ] [vert.x-eventloop-thread-7] io.vertx.ext.asyncsql.impl.PostgreSQLClientImpl-120 - Creating configuration for localhost:8005
+[2017-12-18 18:15:57.088] [INFO ] [vert.x-eventloop-thread-4] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.089] [INFO ] [vert.x-eventloop-thread-1] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.089] [INFO ] [vert.x-eventloop-thread-7] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.087] [INFO ] [vert.x-eventloop-thread-3] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.088] [INFO ] [vert.x-eventloop-thread-5] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.090] [INFO ] [vert.x-eventloop-thread-6] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.090] [INFO ] [vert.x-eventloop-thread-2] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:15:57.091] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:41.971] [INFO ] [main] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-134 - Loaded zookeeper.json file from resourceLocation=zookeeper.json
+[2017-12-18 18:16:43.924] [INFO ] [vert.x-worker-thread-0] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-299 - Zookeeper hosts set to 192.168.237.128
+[2017-12-18 18:16:44.029] [INFO ] [vert.x-worker-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:44.113] [INFO ] [vert.x-worker-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.226] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.task.Launcher-65 - 创建集群vertx成功
+[2017-12-18 18:16:45.250] [INFO ] [vert.x-eventloop-thread-1] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.256] [INFO ] [vert.x-eventloop-thread-7] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.258] [INFO ] [vert.x-eventloop-thread-6] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.258] [INFO ] [vert.x-eventloop-thread-5] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.259] [INFO ] [vert.x-eventloop-thread-2] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.265] [INFO ] [vert.x-eventloop-thread-3] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.262] [INFO ] [vert.x-eventloop-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.289] [INFO ] [vert.x-eventloop-thread-4] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:16:45.298] [INFO ] [vert.x-eventloop-thread-7-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.336] [INFO ] [vert.x-eventloop-thread-3-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.348] [INFO ] [vert.x-eventloop-thread-6-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.353] [INFO ] [vert.x-eventloop-thread-5-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.358] [INFO ] [vert.x-eventloop-thread-2-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.359] [INFO ] [vert.x-eventloop-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.362] [INFO ] [vert.x-eventloop-thread-4-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.364] [INFO ] [vert.x-eventloop-thread-1-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:16:45.389] [INFO ] [vert.x-eventloop-thread-5] io.vertx.ext.asyncsql.impl.PostgreSQLClientImpl-120 - Creating configuration for localhost:8005
+[2017-12-18 18:16:46.004] [INFO ] [vert.x-eventloop-thread-2] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.004] [INFO ] [vert.x-eventloop-thread-1] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.005] [INFO ] [vert.x-eventloop-thread-3] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.005] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.005] [INFO ] [vert.x-eventloop-thread-5] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.005] [INFO ] [vert.x-eventloop-thread-6] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.005] [INFO ] [vert.x-eventloop-thread-4] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:16:46.006] [INFO ] [vert.x-eventloop-thread-7] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:29.916] [INFO ] [main] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-134 - Loaded zookeeper.json file from resourceLocation=zookeeper.json
+[2017-12-18 18:17:31.607] [INFO ] [vert.x-worker-thread-0] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-299 - Zookeeper hosts set to 192.168.237.128
+[2017-12-18 18:17:31.694] [INFO ] [vert.x-worker-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:31.800] [INFO ] [vert.x-worker-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:32.887] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.task.Launcher-65 - 创建集群vertx成功
+[2017-12-18 18:17:32.909] [INFO ] [vert.x-eventloop-thread-2] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.909] [INFO ] [vert.x-eventloop-thread-6] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.911] [INFO ] [vert.x-eventloop-thread-3] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.913] [INFO ] [vert.x-eventloop-thread-1] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.915] [INFO ] [vert.x-eventloop-thread-7] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.928] [INFO ] [vert.x-eventloop-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.942] [INFO ] [vert.x-eventloop-thread-6-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:32.952] [INFO ] [vert.x-eventloop-thread-5] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:32.952] [INFO ] [vert.x-eventloop-thread-4] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:17:33.009] [INFO ] [vert.x-eventloop-thread-2-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.010] [INFO ] [vert.x-eventloop-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.024] [INFO ] [vert.x-eventloop-thread-7-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.036] [INFO ] [vert.x-eventloop-thread-1-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.050] [INFO ] [vert.x-eventloop-thread-5-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.052] [INFO ] [vert.x-eventloop-thread-3-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.053] [INFO ] [vert.x-eventloop-thread-4-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:17:33.082] [INFO ] [vert.x-eventloop-thread-6] io.vertx.ext.asyncsql.impl.PostgreSQLClientImpl-120 - Creating configuration for localhost:8005
+[2017-12-18 18:17:33.715] [INFO ] [vert.x-eventloop-thread-6] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.715] [INFO ] [vert.x-eventloop-thread-4] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.716] [INFO ] [vert.x-eventloop-thread-5] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.716] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.717] [INFO ] [vert.x-eventloop-thread-2] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.718] [INFO ] [vert.x-eventloop-thread-3] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.719] [INFO ] [vert.x-eventloop-thread-7] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:17:33.720] [INFO ] [vert.x-eventloop-thread-1] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:09.637] [INFO ] [main] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-134 - Loaded zookeeper.json file from resourceLocation=zookeeper.json
+[2017-12-18 18:24:10.817] [INFO ] [vert.x-worker-thread-0] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-299 - Zookeeper hosts set to 192.168.237.128
+[2017-12-18 18:24:11.110] [INFO ] [vert.x-worker-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:11.194] [INFO ] [vert.x-worker-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.046] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.task.Launcher-65 - 创建集群vertx成功
+[2017-12-18 18:24:12.069] [INFO ] [vert.x-eventloop-thread-3] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.078] [INFO ] [vert.x-eventloop-thread-5] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.080] [INFO ] [vert.x-eventloop-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.081] [INFO ] [vert.x-eventloop-thread-1] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.081] [INFO ] [vert.x-eventloop-thread-4] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.082] [INFO ] [vert.x-eventloop-thread-7] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.097] [INFO ] [vert.x-eventloop-thread-2] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.100] [INFO ] [vert.x-eventloop-thread-6] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:24:12.134] [INFO ] [vert.x-eventloop-thread-5-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.136] [INFO ] [vert.x-eventloop-thread-3-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.141] [INFO ] [vert.x-eventloop-thread-4-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.154] [INFO ] [vert.x-eventloop-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.163] [INFO ] [vert.x-eventloop-thread-7-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.172] [INFO ] [vert.x-eventloop-thread-6-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.176] [INFO ] [vert.x-eventloop-thread-2-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.178] [INFO ] [vert.x-eventloop-thread-1-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:24:12.231] [INFO ] [vert.x-eventloop-thread-3] io.vertx.ext.asyncsql.impl.PostgreSQLClientImpl-120 - Creating configuration for localhost:8005
+[2017-12-18 18:24:12.752] [INFO ] [vert.x-eventloop-thread-5] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.752] [INFO ] [vert.x-eventloop-thread-6] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.753] [INFO ] [vert.x-eventloop-thread-4] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.752] [INFO ] [vert.x-eventloop-thread-1] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.754] [INFO ] [vert.x-eventloop-thread-7] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.754] [INFO ] [vert.x-eventloop-thread-3] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.754] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:24:12.755] [INFO ] [vert.x-eventloop-thread-2] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:17.143] [INFO ] [main] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-134 - Loaded zookeeper.json file from resourceLocation=zookeeper.json
+[2017-12-18 18:25:18.283] [INFO ] [vert.x-worker-thread-0] io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager-299 - Zookeeper hosts set to 192.168.237.128
+[2017-12-18 18:25:18.375] [INFO ] [vert.x-worker-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:18.468] [INFO ] [vert.x-worker-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.327] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.task.Launcher-65 - 创建集群vertx成功
+[2017-12-18 18:25:19.343] [INFO ] [vert.x-eventloop-thread-1] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.343] [INFO ] [vert.x-eventloop-thread-3] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.343] [INFO ] [vert.x-eventloop-thread-0] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.358] [INFO ] [vert.x-eventloop-thread-2] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.358] [INFO ] [vert.x-eventloop-thread-7] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.361] [INFO ] [vert.x-eventloop-thread-4] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.361] [INFO ] [vert.x-eventloop-thread-5] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.383] [INFO ] [vert.x-eventloop-thread-6] org.apache.curator.framework.imps.CuratorFrameworkImpl-235 - Starting
+[2017-12-18 18:25:19.391] [INFO ] [vert.x-eventloop-thread-0-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.416] [INFO ] [vert.x-eventloop-thread-3-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.418] [INFO ] [vert.x-eventloop-thread-2-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.481] [INFO ] [vert.x-eventloop-thread-6-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.481] [INFO ] [vert.x-eventloop-thread-7-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.483] [INFO ] [vert.x-eventloop-thread-1-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.493] [INFO ] [vert.x-eventloop-thread-4-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.496] [INFO ] [vert.x-eventloop-thread-5-EventThread] org.apache.curator.framework.state.ConnectionStateManager-228 - State change: CONNECTED
+[2017-12-18 18:25:19.498] [INFO ] [vert.x-eventloop-thread-0] io.vertx.ext.asyncsql.impl.PostgreSQLClientImpl-120 - Creating configuration for localhost:8005
+[2017-12-18 18:25:20.061] [INFO ] [vert.x-eventloop-thread-4] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.061] [INFO ] [vert.x-eventloop-thread-7] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.063] [INFO ] [vert.x-eventloop-thread-3] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.063] [INFO ] [vert.x-eventloop-thread-5] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.063] [INFO ] [vert.x-eventloop-thread-2] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.061] [INFO ] [vert.x-eventloop-thread-0] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.063] [INFO ] [vert.x-eventloop-thread-6] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published
+[2017-12-18 18:25:20.063] [INFO ] [vert.x-eventloop-thread-1] com.vertxjava.common.verticle.BaseVerticle-83 - Service <server-task-http> published

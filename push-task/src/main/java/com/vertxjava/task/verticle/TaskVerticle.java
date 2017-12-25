@@ -19,7 +19,7 @@ public class TaskVerticle extends HttpVerticle {
     private static final String DEFAULT_HOST = "localhost";
     // 默认port
     private static final Integer DEFAULT_PORT = 8004;
-    // task service
+    // task services
     private TaskService taskService;
 
     @Override

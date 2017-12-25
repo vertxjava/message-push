@@ -24,8 +24,8 @@ public class DataAccessWrapper {
     private final AsyncSQLClient client;
     private Logger logger = LoggerFactory.getLogger(DataAccessWrapper.class);
 
-    public DataAccessWrapper(Vertx vertx, JsonObject config) {
-        this.client = PostgreSQLClient.createShared(vertx, config);
+    public DataAccessWrapper(AsyncSQLClient client) {
+        this.client = client;
     }
 
     protected Future<Void> update(String sql) {

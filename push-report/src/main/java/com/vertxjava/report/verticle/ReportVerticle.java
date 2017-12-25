@@ -1,11 +1,15 @@
 package com.vertxjava.report.verticle;
 
 import com.vertxjava.common.verticle.HttpVerticle;
+import com.vertxjava.report.handler.BaseHandler;
+import com.vertxjava.servicediscovery.types.KPDataSource;
+import com.vertxjava.servicediscovery.types.PGDataSource;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Future;
 import io.vertx.core.Verticle;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.asyncsql.AsyncSQLClient;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
@@ -24,27 +28,48 @@ import java.util.Properties;
 public class ReportVerticle extends HttpVerticle {
 
     // 服务名称
-    private static final String SERVER_NAME = "server-report-http";
+    private static final String SERVER_NAME = "report";
     // 默认host
     private static final String DEFAULT_HOST = "localhost";
     // 默认port
     private static final Integer DEFAULT_PORT = 8004;
     // 默认kafka服务
     private static final String DEFAULT_KAFKA_SERVER = "127.0.0.1:9092";
-    // api name
-    private static final String API_NAME = "report";
     // kafka topic
     private static final String TOPIC = "topicReport";
     // kafka的发布者服务
-    private KafkaProducer<Object, Object> kafkaProducer;
-
+    private KafkaProducer<String, String> producer;
+    private AsyncSQLClient client;
     @Override
     public void start(Future<Void> startFuture) throws Exception {
         super.start();
+
         final Router router = Router.router(vertx);
         router.route().handler(BodyHandler.create());
         router.post("/report").handler(this::dataReport);
-        // 创建kafka服务
+        router.get("/v").handler(context -> {
+            System.out.println("report");
+            context.response().end("1.0");
+        });
+        PGDataSource.getPGClient(discovery,new JsonObject().put("name","postgresql_server"), ar -> {
+            if (ar.succeeded()){
+                client = ar.result();
+                router.get("/vv").handler(BaseHandler.create(client));
+                System.out.println("获取到了");
+            }else{
+                System.out.println("获取微服务失败");
+            }
+        });
+        KPDataSource.getKPClient(discovery,new JsonObject().put("name","KafkaProduce_server"),ar -> {
+            if (ar.succeeded()){
+                producer = ar.result();
+                System.out.println("获取成功乐乐乐");
+            }else{
+                System.out.println("获取kp失败："+ar.cause());
+            }
+        });
+
+        /*// 创建kafka服务
         // 初始化kafka生产者服务
         Properties props = new Properties();
         props.put("bootstrap.servers", "192.168.237.128:9092,192.168.237.128:9093");
@@ -55,14 +80,14 @@ public class ReportVerticle extends HttpVerticle {
         props.put("buffer.memory", "33554432");
         props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
-        kafkaProducer = io.vertx.kafka.client.producer.KafkaProducer.createShared(vertx, "the_Kafka", props);
+         = io.vertx.kafka.client.producer.KafkaProducer.createShared(vertx, "the_Kafka", props);*/
         // host
         String host = config().getString("host", DEFAULT_HOST);
         // port
         Integer port = config().getInteger("port", DEFAULT_PORT);
         // 创建http服务 并发布httpEndpoint
         createHttpServer(router, host, port)
-                .compose(created -> publishHttpEndpoint(SERVER_NAME, API_NAME, host, port))
+                .compose(created -> publishHttpEndpoint(SERVER_NAME, host, port))
                 .compose(published -> deployVerticle(new MongoStoreVerticle())
                 .compose(deployed -> deployVerticle(new RedisStoreVerticle()))).setHandler(ar -> {
             if (ar.succeeded()) {
@@ -78,8 +103,8 @@ public class ReportVerticle extends HttpVerticle {
 
     private void dataReport(RoutingContext context) {
         JsonObject params = context.getBodyAsJson();
-        KafkaProducerRecord<Object, Object> record = KafkaProducerRecord.create(TOPIC, params.encodePrettily());
-        kafkaProducer.write(record, done -> {
+        KafkaProducerRecord<String, String> record = KafkaProducerRecord.create(TOPIC, params.encodePrettily());
+        producer.write(record, done -> {
             if (done.succeeded()) {
                 RecordMetadata recordMetadata = done.result();
                 System.out.println("发送");
@@ -106,7 +131,7 @@ public class ReportVerticle extends HttpVerticle {
 
     @Override
     public void stop(Future<Void> stopFuture) throws Exception {
-        kafkaProducer.close();
+        producer.close();
         super.stop(stopFuture);
     }
 }

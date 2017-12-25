@@ -1,5 +1,5 @@
 {
-  "zookeeperHosts":"47.94.8.155",
+  "zookeeperHosts":"192.168.237.128",
   "sessionTimeout":20000,
   "connectTimeout":3000,
   "rootPath":"message_push",

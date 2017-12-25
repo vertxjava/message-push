@@ -1,21 +1,25 @@
 package com.vertxjava.common.verticle;
 
+import com.vertxjava.servicediscovery.types.KCDataSource;
+import com.vertxjava.servicediscovery.types.KPDataSource;
+import com.vertxjava.servicediscovery.types.PGDataSource;
+import com.vertxjava.servicediscovery.types.WebSocketEndpoint;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.CompositeFuture;
 import io.vertx.core.Future;
+import io.vertx.core.http.HttpMethod;
+import io.vertx.core.http.HttpServer;
 import io.vertx.core.impl.ConcurrentHashSet;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.CorsHandler;
 import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
-import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.types.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * The base class of all verticle.
@@ -33,8 +37,8 @@ public class BaseVerticle extends AbstractVerticle {
     protected ServiceDiscovery discovery;
 
     /*
-     * service records,When a component is destroyed,
-     * it is used to clear the record from the service discovery.
+     * services records,When a component is destroyed,
+     * it is used to clear the record from the services discovery.
      */
     private Set<Record> records = new ConcurrentHashSet<Record>();
 
@@ -43,25 +47,8 @@ public class BaseVerticle extends AbstractVerticle {
      */
     private Logger log = LoggerFactory.getLogger(BaseVerticle.class);
 
-    @Override
-    public void start() throws Exception {
-        /*
-         * get serviceDiscovery instance, using zookeeper as back end storage.
-         *
-         * setAnnounceAddress():Every time a service provider is published or withdrawn,
-         * an event is fired on the event bus. This event contains the record that has been modified.
-         * We can get this information through eventBus.
-         *
-         * setName():set the name of a service discovery.
-         */
-        discovery = ServiceDiscovery.create(vertx, new ServiceDiscoveryOptions()
-                .setBackendConfiguration(config().getJsonObject("serviceDiscovery"))
-                .setAnnounceAddress("vertxjava.discovery.announce")
-                .setName("vertxjava-message"));
-    }
-
     /**
-     * publish apiGateway service
+     * publish apiGateway services
      *
      * @param host
      * @param port
@@ -73,10 +60,15 @@ public class BaseVerticle extends AbstractVerticle {
     }
 
     /*
-     * Publish a httpEndPoint service
+     * Publish a httpEndPoint services
      */
     protected Future<Void> publishHttpEndpoint(String name, String host, int port) {
         Record record = HttpEndpoint.createRecord(name, host, port, "/" + name);
+        return publish(record);
+    }
+
+    protected Future<Void> publishWebSocketEndpoint(String name, String host, int port) {
+        Record record = WebSocketEndpoint.createRecord(name, host, port, "/" + name,null);
         return publish(record);
     }
 
@@ -86,27 +78,62 @@ public class BaseVerticle extends AbstractVerticle {
         return publish(record);
     }
 
-    /*protected <T> Future<T> getProxyService(Class<T> clazz) {
-        Future<T> future = Future.future();
-        EventBusService.getProxy(discovery, clazz, future.completer());
-        return future;
-    }*/
-
     protected Future<Void> publishMessageSource(String name, String address) {
         Record record = MessageSource.createRecord(name, address);
         return publish(record);
     }
 
-    protected Future<Void> publishRedisDataSource(String name,String host,int port){
-        Record record = RedisDataSource.createRecord(name,new JsonObject().put("host",host).put("port",port),null);
+    protected Future<Void> publishRedisDataSource(JsonObject config) {
+        Record record = RedisDataSource.createRecord(config.getString("name"), config, null);
         return publish(record);
     }
 
-    protected Future<Void> publishMongoDataSource(String name,String host,int port,String dbName){
-        Record record = MongoDataSource.createRecord(name,new JsonObject().put("host",host).put("port",port).put("db_name",dbName),null);
+    protected Future<Void> publishMongodbDataSource(JsonObject config) {
+        Record record = MongoDataSource.createRecord(config.getString("name"), config, null);
         return publish(record);
     }
 
+    protected Future<Void> publishPGDataSource(JsonObject config) {
+        Record record = PGDataSource.createRecord(config.getString("name"), config, null);
+        return publish(record);
+    }
+
+    protected Future<Void> publishKCDataSource(JsonObject config) {
+        Record record = KCDataSource.createRecord(config.getString("name"), config, null);
+        return publish(record);
+    }
+
+    protected Future<Void> publishKPDataSource(JsonObject config) {
+        Record record = KPDataSource.createRecord(config.getString("name"), config, null);
+        return publish(record);
+    }
+
+    protected Future<Void> createHttpServer(Router router, String host, int port) {
+        Future<HttpServer> httpServerFuture = Future.future();
+        vertx.createHttpServer()
+                .requestHandler(router::accept)
+                .listen(port, host, httpServerFuture.completer());
+        return httpServerFuture.map(r -> null);
+    }
+
+    // 启用CORS支持
+    protected void enableCorsSupport(Router router) {
+        Set<String> allowHeaders = new HashSet<>();
+        allowHeaders.add("Authorization");
+        allowHeaders.add("x-requested-with");
+        allowHeaders.add("Access-Control-Allow-Origin");
+        allowHeaders.add("origin");
+        allowHeaders.add("Content-Type");
+        allowHeaders.add("accept");
+        Set<HttpMethod> allowMethods = new HashSet<>();
+        allowMethods.add(HttpMethod.GET);
+        allowMethods.add(HttpMethod.POST);
+        allowMethods.add(HttpMethod.DELETE);
+        allowMethods.add(HttpMethod.PATCH);
+        router.route().handler(CorsHandler.create("*")
+                .allowedHeaders(allowHeaders)
+                .allowedMethods(allowMethods));
+    }
 
     /**
      * publish record
@@ -120,7 +147,7 @@ public class BaseVerticle extends AbstractVerticle {
             try {
                 start();
             } catch (Exception e) {
-                throw new IllegalStateException("Cannot create discovery service");
+                throw new IllegalStateException("Cannot create discovery services");
             }
         }
         discovery.publish(record, ar -> {
@@ -135,6 +162,8 @@ public class BaseVerticle extends AbstractVerticle {
         });
         return future;
     }
+
+
 
     // 根据服务名称获取httpPoint服务，多个服务实现简单的负载均衡（随机）
     protected Future<Record> getHttpEndPointByName(String name) {
@@ -160,7 +189,7 @@ public class BaseVerticle extends AbstractVerticle {
 
     // 销毁discovery服务
     @Override
-    public void stop(Future<Void> future) throws Exception {
+    public void stop(Future<Void> future) {
         if (records.isEmpty()) {
             discovery.close();
             future.complete();
@@ -173,6 +202,7 @@ public class BaseVerticle extends AbstractVerticle {
             });
             CompositeFuture.all(futures).setHandler(ar -> {
                 if (ar.succeeded()) {
+                    records.clear();
                     future.complete();
                 } else {
                     future.fail(ar.cause());

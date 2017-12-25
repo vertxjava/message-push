@@ -12,7 +12,7 @@
     <artifactId>push-pull</artifactId>
 
     <properties>
-        <main.class>com.vertxjava.pull.Launcher</main.class>
+        <main.class>com.vertxjava.pull.App</main.class>
     </properties>
 
     <dependencies>
