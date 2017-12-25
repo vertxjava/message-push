@@ -1,6 +1,6 @@
 package com.vertxjava.gateway;
 
-import com.vertxjava.gateway.verticle.ApiGatewayVerticle;
+import com.vertxjava.gateway.verticle.MainVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -17,8 +17,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Launcher {
-    private static Logger logger = LoggerFactory.getLogger(Launcher.class);
+public class App {
+    private static Logger logger = LoggerFactory.getLogger(App.class);
     private static String deployId;
     private static Vertx vertx;
 
@@ -42,8 +42,8 @@ public class Launcher {
         // 配置eventBus
         EventBusOptions eventBusOptions = new EventBusOptions();
         eventBusOptions.setClustered(true)
-                .setHost(conf.getJsonObject("eventBusConfig").getString("host"))
-                .setPort(conf.getJsonObject("eventBusConfig").getInteger("port"));
+                .setHost(conf.getString("eventBusHost"))
+                .setPort(conf.getInteger("eventBusPort"));
 
         // 配置Vertx
         VertxOptions vertxOptions = new VertxOptions();
@@ -54,25 +54,31 @@ public class Launcher {
 
         // 配置DeploymentOptions
         DeploymentOptions options = new DeploymentOptions();
-        options.setConfig(conf.getJsonObject("verticleConfig"));
+        String verticleInstance = conf.getString("verticleInstance");
+        if ("auto".equals(verticleInstance)){
+            options.setInstances(vertxOptions.getEventLoopPoolSize());
+        }else{
+            options.setInstances(Integer.parseInt(verticleInstance));
+        }
+        options.setConfig(new JsonObject().put("path",conf.getString("verticleConfigFilePath")));
 
         // 获取集群vertx
         Vertx.clusteredVertx(vertxOptions, ar -> {
             if (ar.succeeded()) {
                 // 集群vertx
                 vertx = ar.result();
-                logger.info("创建集群vertx成功");
+                logger.info("Create vertx cluster success");
                 // 部署verticle
-                vertx.deployVerticle(ApiGatewayVerticle.class, options, res -> {
+                vertx.deployVerticle(MainVerticle.class.getName(), options, res -> {
                     if (res.succeeded()) {
-                        logger.info("部署Verticle成功");
+                        logger.info("Deploy verticle success");
                         deployId = res.result();
                     } else {
-                        logger.error("部署Verticle失败 , 原因 : " + res.cause());
+                        logger.error("Deploy verticle fail, case : " + res.cause());
                     }
                 });
             } else {
-                logger.error("创建集群vertx失败 , 原因 : " + ar.cause());
+                logger.error("create vertx cluster fail , case : " + ar.cause());
             }
         });
     }

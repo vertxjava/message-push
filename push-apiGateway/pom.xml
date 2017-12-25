@@ -12,7 +12,7 @@
     <artifactId>push-apiGateway</artifactId>
 
     <properties>
-        <main.class>com.vertxjava.gateway.Launcher</main.class>
+        <main.class>com.vertxjava.gateway.App</main.class>
     </properties>
 
     <dependencies>
@@ -24,6 +24,19 @@
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-auth-jwt</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-dropwizard-metrics</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-config</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-health-check</artifactId>
         </dependency>
         <dependency>
             <groupId>com.squareup.retrofit2</groupId>

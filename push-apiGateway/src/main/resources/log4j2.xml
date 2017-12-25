@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--设置log4j2的自身log级别为INFO-->
-<configuration status="INFO">
+<configuration status="WARN">
     <appenders>
         <console name="Console" target="SYSTEM_OUT">
             <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>

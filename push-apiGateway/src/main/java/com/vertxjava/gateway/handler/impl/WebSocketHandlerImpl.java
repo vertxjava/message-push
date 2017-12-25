@@ -1,11 +1,18 @@
 package com.vertxjava.gateway.handler.impl;
 
 import com.vertxjava.gateway.handler.WebSocketHandler;
-import com.vertxjava.pull.service.PullService;
+import com.vertxjava.servicediscovery.types.WebSocketEndpoint;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+import io.vertx.servicediscovery.Record;
 import io.vertx.servicediscovery.ServiceDiscovery;
-import io.vertx.servicediscovery.types.EventBusService;
+import io.vertx.servicediscovery.ServiceReference;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * @author Jack
@@ -14,41 +21,48 @@ import io.vertx.servicediscovery.types.EventBusService;
 public class WebSocketHandlerImpl implements WebSocketHandler {
 
     private ServiceDiscovery discovery;
+    private Logger log = LoggerFactory.getLogger(WebSocketHandlerImpl.class);
 
-    public WebSocketHandlerImpl(ServiceDiscovery discovery){
+    public WebSocketHandlerImpl(ServiceDiscovery discovery) {
         this.discovery = discovery;
     }
 
     @Override
     public void handle(ServerWebSocket socket) {
         String path = socket.path();
-        if (!"/socket".equals(path)) {
-            // 拒绝服务
+        if (path.length() <= 8) {
             socket.reject();
             return;
         }
-
+        String apiName = path.substring(8).split("/")[0];
         socket.handler(buffer -> {
-            EventBusService.getProxy(discovery, PullService.class, ar -> {
+            discovery.getRecords(record -> record.getName().equals(apiName) && record.getType().equals(WebSocketEndpoint.TYPE), ar -> {
                 if (ar.succeeded()) {
-                    PullService service = ar.result();
-                    service.pull(r -> {
-                        if (r.succeeded()) {
-                            Buffer buffer1 = Buffer.buffer().appendString(r.result().encodePrettily());
-                            socket.writeBinaryMessage(buffer1);
-                            socket.close();
+                    List<Record> list = ar.result();
+                    Record record = null;
+                    if (list != null && !list.isEmpty()) {
+                        if (list.size() == 1) {
+                            record = list.get(0);
                         } else {
-                            socket.close();
+                            Collections.shuffle(list);
+                            record = list.get(0);
                         }
-                        ServiceDiscovery.releaseServiceObject(discovery, service);
-                    });
+                        String newPath = path.substring(8 + apiName.length());
+                        ServiceReference reference = discovery.getReference(record);
+                        HttpClient client = reference.getAs(HttpClient.class);
+                        client.websocket(newPath,websocket -> {
+                            websocket.write(buffer);
+                            websocket.handler(socket::write);
+                        });
+                    } else {
+                        socket.reject();
+                    }
                 } else {
-                    socket.close();
+                    log.error("get services discovery records fail,case:" + ar.cause());
+                    socket.reject();
                 }
             });
         });
-
-
     }
 
 }
