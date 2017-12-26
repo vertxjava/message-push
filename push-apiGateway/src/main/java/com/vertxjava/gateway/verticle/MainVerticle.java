@@ -32,7 +32,6 @@ public class MainVerticle extends BaseVerticle {
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
-
         // router
         Router router = Router.router(vertx);
         enableCorsSupport(router);
@@ -133,6 +132,12 @@ public class MainVerticle extends BaseVerticle {
             }
         });
         return future;
+    }
+
+    @Override
+    public void stop(Future<Void> stopFuture) {
+
+        super.stop(stopFuture);
     }
 }
 
