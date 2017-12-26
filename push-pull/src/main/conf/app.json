@@ -1,0 +1,6 @@
+{
+  "eventBusHost": "localhost",
+  "eventBusPort": 8102,
+  "verticleInstance":"1",
+  "verticleConfigFilePath":"D:\\WorkStation\\vertx-study\\message-push\\push-pull\\src\\main\\conf\\verticle.json"
+}

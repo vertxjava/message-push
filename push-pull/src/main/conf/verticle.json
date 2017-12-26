@@ -1,0 +1,13 @@
+{
+  "serviceName":"pull",
+  "httpHost": "localhost",
+  "httpPort": 8002,
+  "serviceDiscovery": {
+    "connection": "192.168.237.128:2181",
+    "maxRetries": 3,
+    "baseSleepTimeBetweenRetries": 1000,
+    "ephemeral": true,
+    "guaranteed": true,
+    "basePath": "/services"
+  }
+}
