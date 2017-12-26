@@ -12,7 +12,7 @@
     "name": "mongodbServer",
     "host": "192.168.237.128",
     "port": 27017,
-    "dbName": "push"
+    "db_name": "push"
   },
   "postgresql": {
     "name": "postgresqlServer",
