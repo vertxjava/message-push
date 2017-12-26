@@ -15,7 +15,6 @@
         <module>push-pull</module>
         <module>push-report</module>
         <module>push-task</module>
-        <module>push-matcher</module>
     </modules>
 
     <properties>
