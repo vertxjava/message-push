@@ -17,8 +17,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
 
-public class Launcher {
-    private static Logger logger = LoggerFactory.getLogger(Launcher.class);
+public class App {
+    private static Logger logger = LoggerFactory.getLogger(App.class);
     private static String deployId;
     private static Vertx vertx;
 

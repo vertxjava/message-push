@@ -12,7 +12,7 @@
     <artifactId>push-task</artifactId>
 
     <properties>
-        <main.class>com.vertxjava.task.Launcher</main.class>
+        <main.class>com.vertxjava.task.App</main.class>
     </properties>
 
     <dependencies>
