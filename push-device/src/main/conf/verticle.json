@@ -1,0 +1,22 @@
+{
+  "serverName":"device",
+  "httpHost": "localhost",
+  "httpPort": 8005,
+  "serviceDiscovery": {
+    "host": "192.168.237.128",
+    "port": 6379,
+    "key": "SERVER_RECORDS"
+  },
+  "redisConfig": {
+    "host": "192.168.237.128",
+    "port": 6379,
+    "encoding": "UTF-8",
+    "tcpKeepAlive": true,
+    "tcpNoDelay": true
+  },
+  "mongodbConfig": {
+    "host": "192.168.237.128",
+    "port": 27017,
+    "db_name": "push"
+  }
+}
