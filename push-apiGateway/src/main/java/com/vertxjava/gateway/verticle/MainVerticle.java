@@ -1,143 +1,99 @@
 package com.vertxjava.gateway.verticle;
 
-import com.vertxjava.common.verticle.BaseVerticle;
-import com.vertxjava.gateway.handler.DispatchHandler;
-import com.vertxjava.gateway.handler.WebSocketHandler;
-import io.vertx.config.ConfigRetriever;
-import io.vertx.config.ConfigRetrieverOptions;
-import io.vertx.config.ConfigStoreOptions;
+import com.vertxjava.common.verticle.HttpVerticle;
+import com.vertxjava.gateway.handler.WebSocketDispatchHandler;
+import com.vertxjava.gateway.handler.HttpDispatchHandler;
+import com.vertxjava.gateway.handler.HealthCheckHandler;
 import io.vertx.core.Future;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.bridge.PermittedOptions;
-import io.vertx.ext.dropwizard.MetricsService;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.handler.sockjs.BridgeOptions;
 import io.vertx.ext.web.handler.sockjs.SockJSHandler;
-import io.vertx.servicediscovery.ServiceDiscovery;
-import io.vertx.servicediscovery.ServiceDiscoveryOptions;
 import io.vertx.servicediscovery.rest.ServiceDiscoveryRestEndpoint;
 
-public class MainVerticle extends BaseVerticle {
+/**
+ * Api gateway verticle.
+ * Implement the following functions:
+ * 1. Request forwarding(http and websocket),simple load balancing
+ * 2. Service monitoring
+ * 3. A simple heartbeat monitoring
+ * 4. Authority control(JWT)
+ *
+ * @author <a href="http://www.vertxjava.com">Jack</a>
+ * @create 2018-01-03 17:26
+ **/
+public class MainVerticle extends HttpVerticle {
 
-    // default http host
+    // The default http host
     private static final String DEFAULT_HTTP_HOST = "localhost";
-    // default http port
+    // The default http port
     private static final int DEFAULT_HTTP_PORT = 8001;
+    // The default server name
+    private static final String DEFAULT_SERVER_NAME = "apiGateway";
     // log
-    private Logger log = LoggerFactory.getLogger(MainVerticle.class);
+    private Logger logger = LoggerFactory.getLogger(MainVerticle.class);
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
-        // router
+        super.start();
+        // The router instance
         Router router = Router.router(vertx);
+        // Enable CORS support
         enableCorsSupport(router);
         // Enable fetching data from the body
         router.route().handler(BodyHandler.create());
-        // metrics monitor
-        MetricsService service = MetricsService.create(vertx);
-        // event bus bridge
+        // Event bus bridge
         SockJSHandler sockJSHandler = SockJSHandler.create(vertx);
         BridgeOptions options = new BridgeOptions()
-                .addOutboundPermitted(new PermittedOptions().setAddress("monitor_metrics"))
-                .addOutboundPermitted(new PermittedOptions().setAddress("events.log"));
+                .addOutboundPermitted(new PermittedOptions().setAddress("service.monitor.metrics"))
+                .addOutboundPermitted(new PermittedOptions().setAddress("monitor.log"));
         sockJSHandler.bridge(options);
         router.route("/eventbus/*").handler(sockJSHandler);
-        vertx.setPeriodic(5000, t -> {
-            JsonObject metrics = service.getMetricsSnapshot(vertx);
-            vertx.eventBus().publish("monitor_metrics", metrics);
-        });
-        // vert.x config
-        ConfigStoreOptions fileStore = new ConfigStoreOptions().setType("file").setConfig(config());
-        ConfigRetrieverOptions crOptions = new ConfigRetrieverOptions()
-                .addStore(fileStore).setScanPeriod(5000);
-        ConfigRetriever retriever = ConfigRetriever.create(vertx, crOptions);
-        // listen config change
-        retriever.listen(change -> {
-            JsonObject config = change.getNewConfiguration();
-            // clear che records
-            Future<Void> future = Future.future();
-            stop(future);
-            future.compose(cleared -> init(config,router)).setHandler(r -> {
-                if (r.succeeded()) {
-                    log.info("Redeployment success");
-                } else {
-                    log.error("Redeployment fail,case:" + r.cause());
-                }
-            });
-        });
-        // get config
-        retriever.getConfig(ar -> {
-            init(ar.result(), router).setHandler(r -> {
-                if (r.succeeded()) {
-                    startFuture.complete();
-                } else {
-                    startFuture.fail(r.cause());
-                }
-            });
-        });
-
-        // 心跳监测 并动态修改service discovery的UP和DOWN
-        // jwt auth
-
-    }
-
-    private Future<Void> init(JsonObject config, Router router) {
-        Future<Void> future = Future.future();
-        /*
-         * get serviceDiscovery instance, using zookeeper as back end storage.
-         *
-         * setAnnounceAddress():Every time a services provider is published or withdrawn,
-         * an event is fired on the event bus. This event contains the record that has been modified.
-         * We can get this information through eventBus.
-         *
-         * setName():set the name of a services discovery.
-         */
-        discovery = ServiceDiscovery.create(vertx, new ServiceDiscoveryOptions()
-                .setBackendConfiguration(config.getJsonObject("serviceDiscovery"))
-                .setAnnounceAddress("vertx.discovery.announce").setName("discovery"));
         // Bind service discovery data to the router
         ServiceDiscoveryRestEndpoint.create(router, discovery, "/discovery");
-        router.route("/api/*").handler(DispatchHandler.create(discovery));
+        // Forwarding the HTTP request, handled by a specific application
+        router.route("/api/*").handler(HttpDispatchHandler.create(discovery,vertx));
         // Enable access to static resources
         router.route("/*").handler(StaticHandler.create());
-        // http host
-        String httpHost = config.getString("httpHost", DEFAULT_HTTP_HOST);
-        // http port
-        int httpPort = config.getInteger("httpPort", DEFAULT_HTTP_PORT);
-        vertx.createHttpServer().websocketHandler(WebSocketHandler.create(discovery)).requestHandler(router::accept).listen(httpPort, httpHost, ar -> {
+        // The http host
+        String httpHost = config().getString("httpHost", DEFAULT_HTTP_HOST);
+        // The http port
+        int httpPort = config().getInteger("httpPort", DEFAULT_HTTP_PORT);
+        // The server name
+        String serverName = config().getString("serverName", DEFAULT_SERVER_NAME);
+        // Create web socket server and http server
+        // Publish http endpoint
+        createWebSocketServerAndHttpServer(router, httpHost, httpPort, WebSocketDispatchHandler.create(vertx, discovery)).
+                compose(created -> publishHttpEndpoint(serverName, httpHost, httpPort, new JsonObject().put("type", "api-gateway"))).setHandler(ar -> {
             if (ar.succeeded()) {
-                log.info("create http server success,listen on " + httpPort);
-                // 发布网关服务
-                publishApiGateway(httpHost, httpPort)
-                        .compose(published -> publishRedisDataSource(config.getJsonObject("redis")))
-                        .compose(published -> publishMongodbDataSource(config.getJsonObject("mongodb")))
-                        .compose(published -> publishPGDataSource(config.getJsonObject("postgresql")))
-                        .compose(published -> publishKCDataSource(config.getJsonObject("kafkaConsumer")))
-                        .compose(published -> publishKPDataSource(config.getJsonObject("kafkaProduce")))
-                        .setHandler(r -> {
-                            if (r.succeeded()) {
-                                log.info("Service publish success");
-                                future.complete();
-                            } else {
-                                log.error("service publish fail,case:" + r.cause());
-                            }
-                        });
+                startFuture.complete();
+                logger.info("Create http server and websocket server is successful,listen on " + httpPort);
+                if (config().getBoolean("enableHealthCheck")) {
+                    enableHealthCheck();
+                }
             } else {
-                log.error("create http server fail,case:" + ar.cause());
-                future.fail(ar.cause());
+                startFuture.fail(ar.cause());
+                logger.info("Create http server and websocket server is failed,the case is : " + ar.cause());
             }
         });
-        return future;
+    }
+
+    /**
+     * Enable health check
+     */
+    private void enableHealthCheck() {
+        vertx.setPeriodic(5000, HealthCheckHandler.create(discovery));
     }
 
     @Override
     public void stop(Future<Void> stopFuture) {
-
         super.stop(stopFuture);
     }
+
 }
 

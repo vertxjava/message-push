@@ -1,44 +1,14 @@
 {
+  "serverName": "apiGateway",
   "httpHost": "localhost",
   "httpPort": 8001,
-  // redis data source config
-  "redis": {
-    "name": "redisServer",
-    "host": "192.168.237.128",
-    "port": 6379
-  },
-  // mongodb data source config
-  "mongodb": {
-    "name": "mongodbServer",
-    "host": "192.168.237.128",
-    "port": 27017,
-    "db_name": "push"
-  },
-  "postgresql": {
-    "name": "postgresqlServer",
-    "host": "192.168.237.128",
-    "port": 5432,
-    "maxPoolSize": 30,
-    "username": "postgres",
-    "password": "",
-    "database": "push",
-    "charset": "UTF-8",
-    "queryTimeout": 10000
-  },
-  "kafkaConsumer": {
-    "name": "KafkaConsumerServer",
-    "servers": "192.168.237.128:9092,192.168.237.128:9093"
-  },
-  "kafkaProduce": {
-    "name": "KafkaProduceServer",
-    "servers": "192.168.237.128:9092,192.168.237.128:9093"
-  },
+  // Whether to enable heartbeat monitoring
+  "enableHealthCheck": true,
+  // The period
+  "healthPeriod": 5000,
   "serviceDiscovery": {
-    "connection": "192.168.237.128:2181",
-    "maxRetries": 3,
-    "baseSleepTimeBetweenRetries": 1000,
-    "ephemeral": true,
-    "guaranteed": true,
-    "basePath": "/services"
+    "host": "192.168.237.128",
+    "port": 6379,
+    "key": "SERVER_RECORDS"
   }
 }
