@@ -15,6 +15,9 @@
         <module>push-pull</module>
         <module>push-report</module>
         <module>push-task</module>
+        <module>push-ad</module>
+        <module>push-device</module>
+        <module>push-db</module>
     </modules>
 
     <properties>
