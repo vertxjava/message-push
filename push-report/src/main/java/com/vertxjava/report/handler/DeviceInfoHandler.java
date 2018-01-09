@@ -4,6 +4,7 @@ import com.vertxjava.report.handler.impl.DeviceInfoHandlerImpl;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.servicediscovery.ServiceDiscovery;
 
 /**
  * @author Jack
