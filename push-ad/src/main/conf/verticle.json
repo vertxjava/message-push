@@ -1,0 +1,27 @@
+{
+  "serviceName": "ad",
+  "httpHost": "localhost",
+  "httpPort": 8008,
+  "serviceDiscovery": {
+    "host": "192.168.237.128",
+    "port": 6379,
+    "key": "SERVER_RECORDS"
+  },
+  "redisConfig": {
+    "host": "192.168.237.128",
+    "port": 6379,
+    "encoding": "UTF-8",
+    "tcpKeepAlive": true,
+    "tcpNoDelay": true
+  },
+  "postgresqlConfig": {
+    "host": "192.168.237.128",
+    "port": 5432,
+    "maxPoolSize": 30,
+    "username": "postgres",
+    "password": "",
+    "database": "push",
+    "charset": "UTF-8",
+    "queryTimeout": 10000
+  }
+}
