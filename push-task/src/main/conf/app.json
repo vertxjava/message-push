@@ -1,0 +1,5 @@
+{
+  "eventBusHost": "localhost",
+  "eventBusPort": 8107,
+  "verticleInstance":"1"
+}

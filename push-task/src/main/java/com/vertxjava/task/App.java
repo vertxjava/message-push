@@ -1,6 +1,6 @@
 package com.vertxjava.task;
 
-import com.vertxjava.task.verticle.TaskVerticle;
+import com.vertxjava.task.verticle.MainVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -9,7 +9,6 @@ import io.vertx.core.json.DecodeException;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.core.metrics.MetricsOptions;
 import io.vertx.core.spi.cluster.ClusterManager;
 import io.vertx.spi.cluster.zookeeper.ZookeeperClusterManager;
 
@@ -18,63 +17,71 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 public class App {
+    // log
     private static Logger logger = LoggerFactory.getLogger(App.class);
-    private static String deployId;
-    private static Vertx vertx;
 
     public static void main(String[] args) {
-        // 读取配置文件
-        JsonObject conf = null;
+        // Read the configuration file
+        JsonObject appConfig = null;
+        JsonObject verticleConfig = null;
         try {
             Scanner scanner = new Scanner(new File(args[0])).useDelimiter("\\A");
-            conf = new JsonObject(scanner.next());
+            appConfig = new JsonObject(scanner.next());
+            scanner = new Scanner(new File(args[1])).useDelimiter("\\A");
+            verticleConfig = new JsonObject(scanner.next());
         } catch (DecodeException e) {
-            logger.error("配置文件不是一个标准的json格式");
+            logger.error("The configuration file is not a standard JSON format");
             return;
         } catch (FileNotFoundException e) {
             logger.error(e.toString());
             return;
         }
 
-        // 配置集群管理器 使用zookeeper作为集群管理器 将使用classpath下的zookeeper.json作为配置文件
+        /*
+         * Cluster manager , using zookeeper as a cluster manager
+         * You will use zookeeper.json under classpath as a configuration file
+         */
         ClusterManager clusterManager = new ZookeeperClusterManager();
 
-        // 配置eventBus
+        // Config the eventBus
         EventBusOptions eventBusOptions = new EventBusOptions();
         eventBusOptions.setClustered(true)
-                .setHost(conf.getJsonObject("eventBusConfig").getString("host"))
-                .setPort(conf.getJsonObject("eventBusConfig").getInteger("port"));
+                .setHost(appConfig.getString("eventBusHost"))
+                .setPort(appConfig.getInteger("eventBusPort"));
 
-        // 配置Vertx
+        // Config the vert.x
         VertxOptions vertxOptions = new VertxOptions();
         vertxOptions.setClustered(true);
         vertxOptions.setEventBusOptions(eventBusOptions);
         vertxOptions.setClusterManager(clusterManager);
-        vertxOptions.setMetricsOptions(new MetricsOptions().setEnabled(true));
 
-        // 配置DeploymentOptions
+        // Config DeploymentOptions
         DeploymentOptions options = new DeploymentOptions();
-        options.setConfig(conf.getJsonObject("verticleConfig"));
-        options.setInstances(vertxOptions.getEventLoopPoolSize());
+        String verticleInstance = appConfig.getString("verticleInstance");
+        if ("auto".equals(verticleInstance)) {
+            options.setInstances(vertxOptions.getEventLoopPoolSize());
+        } else {
+            options.setInstances(Integer.parseInt(verticleInstance));
+        }
+        options.setConfig(verticleConfig);
 
-        // 获取集群vertx
+        // Get vertx instance by cluster
         Vertx.clusteredVertx(vertxOptions, ar -> {
             if (ar.succeeded()) {
-                // 集群vertx
-                vertx = ar.result();
-                logger.info("创建集群vertx成功");
-                // 部署verticle
-                vertx.deployVerticle(TaskVerticle.class, options, res -> {
+                Vertx vertx = ar.result();
+                logger.info("Create vertx cluster is successful");
+                // Deploy verticle
+                vertx.deployVerticle(MainVerticle.class.getName(), options, res -> {
                     if (res.succeeded()) {
-                        logger.info("部署Verticle成功");
-                        deployId = res.result();
+                        logger.info("Deploy verticle is successful");
                     } else {
-                        logger.error("部署Verticle失败 , 原因 : " + res.cause());
+                        logger.error("Deploy verticle is failed, case : " + res.cause());
                     }
                 });
             } else {
-                logger.error("创建集群vertx失败 , 原因 : " + ar.cause());
+                logger.error("create vertx cluster is failed , case : " + ar.cause());
             }
         });
     }
+
 }

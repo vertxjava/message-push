@@ -1,0 +1,20 @@
+{
+  "serverName":"task",
+  "httpHost": "localhost",
+  "httpPort": 8007,
+  "serviceDiscovery": {
+    "host": "192.168.237.128",
+    "port": 6379,
+    "key": "SERVER_RECORDS"
+  },
+  "postgresqlConfig": {
+    "host": "192.168.237.128",
+    "port": 5432,
+    "maxPoolSize": 30,
+    "username": "postgres",
+    "password": "",
+    "database": "push",
+    "charset": "UTF-8",
+    "queryTimeout": 10000
+  }
+}
