@@ -62,40 +62,24 @@ public class WebSocketDispatchHandlerImpl implements WebSocketDispatchHandler {
                 return;
             }
             isCheck = true;
-           /* Map<String, Long> tmpMap = this.connectionTimeMap;
-            List<String> tmp = new ArrayList<>();
-            tmpMap.forEach((pid, time) -> {
-                // connection timeout (ms)
-                if (System.currentTimeMillis() - time > 20000) {
-                    ServerWebSocket socket = this.connectionMap.get(pid);
-                    if (socket != null) {
-                        socket.close();
-                        connectionMap.remove(pid);
-                        connectionTimeMap.remove(pid);
-                        pidAndSocketIdMap.entrySet().iterator().forEachRemaining(entry -> {
-                            if (entry.getValue().equals(pid)) {
-                                tmp.add(entry.getKey());
-                            }
-                        });
+            connectionTimeMap.entrySet().iterator().forEachRemaining(entry -> {
+                String pid = entry.getKey();
+                ServerWebSocket socket = this.connectionMap.get(pid);
+                socket.close();
+                connectionTimeMap.remove(pid);
+                connectionTimeMap.remove(pid);
+                pidAndSocketIdMap.entrySet().iterator().forEachRemaining(stringEntry -> {
+                    if (stringEntry.getValue().equals(pid)) {
+                        pidAndSocketIdMap.remove(stringEntry.getKey());
                     }
-                }
+                });
             });
-            tmp.forEach(key -> pidAndSocketIdMap.remove(key));*/
-            for (Map.Entry<String, Long> entry : connectionTimeMap.entrySet()) {
-                if (System.currentTimeMillis() - entry.getValue() > 20000) {
-                    String pid = entry.getKey();
-                    ServerWebSocket socket = this.connectionMap.get(pid);
-                    socket.close();
-                }
-            }
             isCheck = false;
         });
         kafkaConsumer.subscribe(MESSAGE_TOPIC);
         kafkaConsumer.handler(record -> {
             JsonObject message = new JsonObject(record.value());
             String pid = message.getString("pid");
-            System.out.println("拿到："+pid);
-            System.out.println(message.getJsonArray("message"));
             ServerWebSocket socket = connectionMap.get(pid);
             if (socket != null)
                 socket.writeTextMessage(message.getJsonArray("message").encode());
