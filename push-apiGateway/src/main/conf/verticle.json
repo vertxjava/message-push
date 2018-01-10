@@ -10,5 +10,9 @@
     "host": "192.168.237.128",
     "port": 6379,
     "key": "SERVER_RECORDS"
+  },
+  "kafkaConfig": {
+    "servers": "192.168.237.128:9092,192.168.237.128:9093",
+    "groupId":"group_message"
   }
 }

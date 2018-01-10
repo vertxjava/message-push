@@ -1,48 +1,50 @@
-package com.vertxjava.pull.api;
+package com.vertxjava.report.api;
 
 import com.vertxjava.common.verticle.HttpVerticle;
-import com.vertxjava.pull.handler.DeviceOnlineHandler;
-import com.vertxjava.pull.verticle.MainVerticle;
+import com.vertxjava.report.handler.DeviceInfoHandler;
+import com.vertxjava.report.handler.FeedbackHandler;
+import com.vertxjava.report.verticle.MainVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.BodyHandler;
+import io.vertx.ext.web.handler.StaticHandler;
 
 /**
- * Client pull message service
+ * .
  *
  * @author <a href="http://www.vertxjava.com">Jack</a>
- * @create 2018-01-09 14:49
+ * @create 2018-01-10 16:44
  **/
-public class PullApiVerticle extends HttpVerticle {
+public class ReportApiVerticle extends HttpVerticle {
 
-    // Default server name
-    private static final String DEFAULT_SERVER_NAME = "pull";
-    // Default http host
-    private static final String DEFAULT_HTTP_HOST = "localhost";
-    // Default http port
-    private static final int DEFAULT_HTTP_PORT = 8002;
     // log
-    private Logger logger = LoggerFactory.getLogger(MainVerticle.class);
+    private static final Logger logger = LoggerFactory.getLogger(ReportApiVerticle.class);
+    // service name
+    private static final String DEFAULT_SERVER_NAME = "report";
+    // default http host
+    private static final String DEFAULT_HTTP_HOST = "localhost";
+    // default http port
+    private static final int DEFAULT_HTTP_PORT = 8002;
 
     @Override
     public void start(Future<Void> startFuture) throws Exception {
-        super.start();
-        // router
         final Router router = Router.router(vertx);
         router.route().handler(BodyHandler.create());
         // Health check
         router.get("/health").handler(context -> context.response().end());
-        // Pull message
-        router.post("/deviceOnline").handler(DeviceOnlineHandler.create(vertx,config()));
+        router.post("/deviceInfoReport").handler(DeviceInfoHandler.create(vertx));
+        router.post("/feedbackInfoReport").handler(FeedbackHandler.create(vertx));
+        // Enable access to static resources
+        router.route("/*").handler(StaticHandler.create());
         // http host
         String httpHost = config().getString("httpHost", DEFAULT_HTTP_HOST);
         // http port
         int httpPort = config().getInteger("httpPort", DEFAULT_HTTP_PORT);
         // server name
         String serverName = config().getString("serverName", DEFAULT_SERVER_NAME);
-        // Create websocket server and publish websocket-endpoint service
+        // Create http server and publish http endpoint
         createHttpServer(router, httpHost, httpPort).compose(created -> publishHttpEndpoint(serverName, httpHost, httpPort)).setHandler(ar -> {
             if (ar.succeeded()) {
                 startFuture.complete();
@@ -56,8 +58,6 @@ public class PullApiVerticle extends HttpVerticle {
 
     @Override
     public void stop(Future<Void> future) {
-        System.out.println("执行了apiVerticle的stop");
         super.stop(future);
     }
-
 }

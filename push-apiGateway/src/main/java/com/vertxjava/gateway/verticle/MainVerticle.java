@@ -68,7 +68,7 @@ public class MainVerticle extends HttpVerticle {
         String serverName = config().getString("serverName", DEFAULT_SERVER_NAME);
         // Create web socket server and http server
         // Publish http endpoint
-        createWebSocketServerAndHttpServer(router, httpHost, httpPort, WebSocketDispatchHandler.create(vertx, discovery)).
+        createWebSocketServerAndHttpServer(router, httpHost, httpPort, WebSocketDispatchHandler.create(vertx, discovery,config())).
                 compose(created -> publishHttpEndpoint(serverName, httpHost, httpPort, new JsonObject().put("type", "api-gateway"))).setHandler(ar -> {
             if (ar.succeeded()) {
                 startFuture.complete();

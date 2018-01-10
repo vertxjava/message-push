@@ -9,7 +9,6 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.redis.RedisOptions;
 
 /**
  * .
@@ -24,18 +23,16 @@ public class AdServiceImpl implements AdService {
     private static final String DEVICE_INFO_KEY = "DEVICE_INFO";
     private Logger logger = LoggerFactory.getLogger(AdMatherHandlerImpl.class);
     private RedisFClient redisFClient;
-    private JsonObject adContext = new JsonObject();
+    private JsonObject adContext;
 
     public AdServiceImpl(Vertx vertx, JsonObject config) {
-        JsonObject redisConfig = config.getJsonObject("redisConfig");
-        RedisOptions redisOptions = new RedisOptions()
-                .setHost(redisConfig.getString("host"))
-                .setPort(redisConfig.getInteger("port"));
-        redisFClient = RedisFClient.create(vertx, redisOptions);
+        redisFClient = RedisFClient.create(vertx, config.getJsonObject("redisConfig"));
     }
 
     @Override
     public Future<String> adMatcher(JsonObject pullData) {
+        // TODO 这个设计可能有问题，如果第一个用户执行到一半，第二个用户执行new操作，第一个用户的数据是不是不存在了
+        adContext = new JsonObject();
         Future<String> future = Future.future();
         final String pid = pullData.getString("pid");
         adContext.put("pid", pid);
@@ -128,6 +125,7 @@ public class AdServiceImpl implements AdService {
         }
         return future;
     }
+
     private String createKey(String pid) {
         return "DEVICE_PUSH_CONTEXT." + pid;
     }

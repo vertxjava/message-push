@@ -16,8 +16,8 @@
         <module>push-report</module>
         <module>push-task</module>
         <module>push-ad</module>
-        <module>push-device</module>
         <module>push-db</module>
+        <module>push-devices</module>
     </modules>
 
     <properties>

@@ -51,8 +51,8 @@ public class HttpDispatchHandlerImpl implements HttpDispatchHandler {
         discovery.getRecords(record -> record.getName().equals(serverName) && record.getType().equals(HttpEndpoint.TYPE), ar -> {
             if (ar.succeeded()) {
                 List<Record> list = ar.result();
-                Record record = null;
                 if (list != null && !list.isEmpty()) {
+                    Record record;
                     if (list.size() == 1) {
                         record = list.get(0);
                     } else {

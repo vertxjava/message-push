@@ -4,8 +4,11 @@ import com.vertxjava.redis.RedisFClient;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.redis.RedisClient;
 import io.vertx.redis.RedisOptions;
+
+import java.util.List;
 
 /**
  * @author <a href="http://www.vertxjava.com">Jack</a>
@@ -15,8 +18,11 @@ public class RedisFClientImpl implements RedisFClient {
 
     private RedisClient client;
 
-    public RedisFClientImpl(Vertx vertx, RedisOptions config) {
-        client = RedisClient.create(vertx, config);
+    public RedisFClientImpl(Vertx vertx, JsonObject config) {
+        RedisOptions redisOptions = new RedisOptions()
+                .setHost(config.getString("host"))
+                .setPort(config.getInteger("port"));
+        client = RedisClient.create(vertx, redisOptions);
     }
 
     @Override
@@ -48,6 +54,22 @@ public class RedisFClientImpl implements RedisFClient {
     public Future<JsonArray> lrange(String key, long to) {
         return Future.future(f -> client.lrange(key, 0, to, f.completer()));
     }
+
+    @Override
+    public Future<Long> del(String key) {
+        return Future.future(f -> client.del(key, f.completer()));
+    }
+
+    @Override
+    public Future<Long> lpush(String key, String value) {
+        return Future.future(f -> client.lpush(key, value, f.completer()));
+    }
+
+    @Override
+    public Future<Long> lpushMany(String key, List<String> value) {
+        return Future.future(f -> client.lpushMany(key, value, f.completer()));
+    }
+
 
     @Override
     public Future<String> get(String key) {

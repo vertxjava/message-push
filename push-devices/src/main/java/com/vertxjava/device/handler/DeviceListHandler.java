@@ -1,6 +1,6 @@
-package com.vertxjava.device.business.handler;
+package com.vertxjava.device.handler;
 
-import com.vertxjava.device.business.handler.impl.DeviceListHandlerImpl;
+import com.vertxjava.device.handler.impl.DeviceListHandlerImpl;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;

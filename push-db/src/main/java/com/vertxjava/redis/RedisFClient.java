@@ -4,7 +4,9 @@ import com.vertxjava.redis.impl.RedisFClientImpl;
 import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
-import io.vertx.redis.RedisOptions;
+import io.vertx.core.json.JsonObject;
+
+import java.util.List;
 
 /**
  * Provide access to redis, and use Future to wrap the results
@@ -14,7 +16,7 @@ import io.vertx.redis.RedisOptions;
  **/
 public interface RedisFClient {
 
-    static RedisFClient create(Vertx vertx, RedisOptions config) {
+    static RedisFClient create(Vertx vertx, JsonObject config) {
         return new RedisFClientImpl(vertx, config);
     }
 
@@ -49,6 +51,12 @@ public interface RedisFClient {
     Future<Long> llen(String key);
 
     Future<JsonArray> lrange(String key, long to);
+
+    Future<Long> del(String key);
+
+    Future<Long> lpush(String key, String value);
+
+    Future<Long> lpushMany(String key, List<String> value);
 
     /**
      * Get the value of a key

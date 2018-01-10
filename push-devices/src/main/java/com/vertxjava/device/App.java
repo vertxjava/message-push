@@ -1,6 +1,7 @@
-package com.vertxjava.device.business;
+package com.vertxjava.device;
 
-import com.vertxjava.device.business.verticle.MainVerticle;
+
+import com.vertxjava.device.verticle.MainVerticle;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
@@ -19,8 +20,10 @@ import java.util.Scanner;
 public class App {
     // log
     private static Logger logger = LoggerFactory.getLogger(App.class);
+    private static Vertx vertx;
+    private static String deployId;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         // Read the configuration file
         JsonObject appConfig = null;
         JsonObject verticleConfig = null;
@@ -68,11 +71,12 @@ public class App {
         // Get vertx instance by cluster
         Vertx.clusteredVertx(vertxOptions, ar -> {
             if (ar.succeeded()) {
-                Vertx vertx = ar.result();
+                vertx = ar.result();
                 logger.info("Create vertx cluster is successful");
                 // Deploy verticle
                 vertx.deployVerticle(MainVerticle.class.getName(), options, res -> {
                     if (res.succeeded()) {
+                        deployId = res.result();
                         logger.info("Deploy verticle is successful");
                     } else {
                         logger.error("Deploy verticle is failed, case : " + res.cause());
@@ -82,6 +86,16 @@ public class App {
                 logger.error("create vertx cluster is failed , case : " + ar.cause());
             }
         });
+
+        // Capture the Kill Command
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> vertx.undeploy(deployId, ar -> {
+            if (ar.succeeded()) {
+                vertx.close();
+                System.exit(0);
+            }
+        })));
+
+        Thread.sleep(10000);
     }
 
 }

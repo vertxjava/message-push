@@ -1,7 +1,7 @@
-package com.vertxjava.device.business.handler.impl;
+package com.vertxjava.device.handler.impl;
 
 import com.vertxjava.common.service.HttpResponseService;
-import com.vertxjava.device.business.handler.DeviceListHandler;
+import com.vertxjava.device.handler.DeviceListHandler;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
@@ -39,7 +39,7 @@ public class DeviceListHandlerImpl implements DeviceListHandler {
                 });
                 context.response().end(result.encodePrettily());
             } else {
-                httpResponseService.serverError(context,ar.cause());
+                httpResponseService.serverError(context, ar.cause());
             }
         });
     }

@@ -7,7 +7,7 @@ import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 
 public interface ADSyncHandler extends Handler<Long> {
-    static ADSyncHandler create(Vertx vertx, JsonObject redisConfig, JsonObject postgresqlConfig) {
-        return new ADSyncHandlerImpl(vertx, redisConfig, postgresqlConfig);
+    static ADSyncHandler create(Vertx vertx, JsonObject config) {
+        return new ADSyncHandlerImpl(vertx, config);
     }
 }

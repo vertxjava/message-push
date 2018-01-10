@@ -2,7 +2,8 @@ package com.vertxjava.task.handler;
 
 import com.vertxjava.task.handler.impl.TaskHandlerImpl;
 import io.vertx.core.Handler;
-import io.vertx.ext.sql.SQLClient;
+import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
 /**
@@ -12,7 +13,7 @@ import io.vertx.ext.web.RoutingContext;
  * @create 2018-01-08 15:15
  **/
 public interface TaskHandler extends Handler<RoutingContext> {
-    static TaskHandler create(SQLClient sqlClient) {
-        return new TaskHandlerImpl(sqlClient);
+    static TaskHandler create(Vertx vertx, JsonObject config) {
+        return new TaskHandlerImpl(vertx, config);
     }
 }

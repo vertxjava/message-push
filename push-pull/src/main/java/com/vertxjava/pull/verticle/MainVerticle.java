@@ -14,8 +14,6 @@ import io.vertx.core.logging.LoggerFactory;
  **/
 public class MainVerticle extends BaseVerticle {
 
-    // eventbus address
-    private static final String EVENTBUS_ADDRESS = "eventbus.pull";
     // log
     private Logger logger = LoggerFactory.getLogger(MainVerticle.class);
 

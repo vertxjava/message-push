@@ -3,6 +3,7 @@ package com.vertxjava.gateway.handler;
 import com.vertxjava.common.handler.WebSocketHandler;
 import com.vertxjava.gateway.handler.impl.WebSocketDispatchHandlerImpl;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonObject;
 import io.vertx.servicediscovery.ServiceDiscovery;
 
 /**
@@ -20,7 +21,7 @@ public interface WebSocketDispatchHandler extends WebSocketHandler {
      * @param discovery The service discovery instance
      * @return WebSocketDispatchHandler instance
      */
-    static WebSocketDispatchHandler create(Vertx vertx, ServiceDiscovery discovery) {
-        return new WebSocketDispatchHandlerImpl(vertx, discovery);
+    static WebSocketDispatchHandler create(Vertx vertx, ServiceDiscovery discovery, JsonObject config) {
+        return new WebSocketDispatchHandlerImpl(vertx, discovery, config);
     }
 }

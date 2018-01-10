@@ -1,17 +1,13 @@
 package com.vertxjava.ad.business.handler.impl;
 
 import com.vertxjava.ad.business.handler.ADSyncHandler;
-import com.vertxjava.common.access.PostgresqlDataAccess;
-import io.vertx.core.CompositeFuture;
-import io.vertx.core.Future;
+import com.vertxjava.postgresql.SQLFClient;
+import com.vertxjava.redis.RedisFClient;
 import io.vertx.core.Vertx;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
-import io.vertx.ext.asyncsql.PostgreSQLClient;
-import io.vertx.ext.sql.SQLClient;
-import io.vertx.redis.RedisClient;
-import io.vertx.redis.RedisOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,38 +19,35 @@ import java.util.List;
 public class ADSyncHandlerImpl implements ADSyncHandler {
 
     private static final String READY_AD_KEY = "READY_AD";
+    private static final String SQL_FIND_AD = "select * from ad where state = 1 order by idx desc";
     private Logger logger = LoggerFactory.getLogger(ADSyncHandlerImpl.class);
-    private RedisClient redisClient;
-    private PostgresqlDataAccess pgDataAccess;
+    private RedisFClient redisFClient;
+    private SQLFClient sqlfClient;
 
-
-    public ADSyncHandlerImpl(Vertx vertx, JsonObject redisConfig, JsonObject postgresqlConfig) {
-        RedisOptions redisOptions = new RedisOptions()
-                .setHost(redisConfig.getString("host"))
-                .setPort(redisConfig.getInteger("port"));
-        redisClient = RedisClient.create(vertx, redisOptions);
-        SQLClient sqlClient = PostgreSQLClient.createShared(vertx, postgresqlConfig);
-        pgDataAccess = PostgresqlDataAccess.create(sqlClient);
+    public ADSyncHandlerImpl(Vertx vertx, JsonObject config) {
+        redisFClient = RedisFClient.create(vertx, config.getJsonObject("redisConfig"));
+        sqlfClient = SQLFClient.create(vertx, config.getJsonObject("postgresqlConfig"));
     }
 
     @Override
     public void handle(Long event) {
         // 获取可以发送的广告
-        pgDataAccess.query("select * from ad where state = 1 order by idx desc").compose(ads -> {
-            return Future.future(future -> {
-                if (ads.isPresent()) {
-                    Future.<Long>future(f -> redisClient.del(READY_AD_KEY, f)).compose(r -> Future.future(f1 -> {
-                        List<Future> list = new ArrayList<Future>();
-                        ads.get().forEach(ad -> list.add(Future.<Long>future(f2 -> redisClient.lpush(READY_AD_KEY, ((JsonObject) ad).encode(), f2))));
-                        CompositeFuture.all(list).setHandler(ar -> future.completer());
-                    }));
-                } else {
-                    future.complete();
-                }
-            });
-        }).setHandler(ar -> {
+        sqlfClient.query(SQL_FIND_AD).setHandler(ar -> {
             if (ar.succeeded()) {
-                logger.info("Ad cache success");
+                if (ar.result().isPresent()) {
+                    JsonArray ads = ar.result().get();
+                    redisFClient.del(READY_AD_KEY).compose(deled -> {
+                        List<String> adList = new ArrayList<>();
+                        ads.forEach(ad -> adList.add(((JsonObject) ad).encode()));
+                        return redisFClient.lpushMany(READY_AD_KEY, adList);
+                    }).setHandler(r -> {
+                        if (r.succeeded()) {
+                            logger.info("Ad cache success");
+                        } else {
+                            logger.error("Ad cache fail,case:" + r.cause());
+                        }
+                    });
+                }
             } else {
                 logger.error("Ad cache fail,case:" + ar.cause());
             }
